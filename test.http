@@ -2,13 +2,34 @@
 # content-type: application/json
 
 # {
-#   "username": "wuyupeii",
+#   "username": "wuyupei",
 #   "nickName": "super_wuyupei",
 #   "password": "123456",
 #   "email": "495174699@qq.com",
-#   "captcha": "912437"
+#   "captcha": "207624"
 # }
 
-GET http://127.0.0.1:3000/user/register-captcha?address=495174699@qq.com HTTP/1.1
+# GET http://127.0.0.1:3000/user/register-captcha?address=495174699@qq.com HTTP/1.1
+# content-type: application/json
+
+
+# GET http://127.0.0.1:3000/user/initData HTTP/1.1
+# content-type: application/json
+
+
+# POST http://127.0.0.1:3000/user/login HTTP/1.1
+# content-type: application/json
+
+# {
+#   "username": "wuyupei",
+#   "password": "222222"
+# }
+
+
+POST http://127.0.0.1:3000/user/admin/login HTTP/1.1
 content-type: application/json
 
+{
+  "username": "wuyupei",
+  "password": "111111"
+}
