@@ -2,11 +2,11 @@
 # content-type: application/json
 
 # {
-#   "username": "wuyupei",
+#   "username": "wuyupeii",
 #   "nickName": "super_wuyupei",
 #   "password": "123456",
 #   "email": "495174699@qq.com",
-#   "captcha": "761857"
+#   "captcha": "912437"
 # }
 
 GET http://127.0.0.1:3000/user/register-captcha?address=495174699@qq.com HTTP/1.1

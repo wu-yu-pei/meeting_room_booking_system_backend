@@ -17,14 +17,25 @@ import { UtilsService } from 'src/common/utils/utils.service';
 export class UserService {
   private logger = new Logger();
 
-  @InjectRepository(User)
-  private readonly userRepository: Repository<User>;
+  // 注入的三种写法
+  // @InjectRepository(User)
+  // private userRepository: Repository<User>;
+  // @Inject(RedisService)
+  // private redisService: RedisService;
+  // @Inject(UtilsService)
+  // private utilsService: UtilsService;
 
-  @Inject(RedisService)
-  private redisService: RedisService;
+  // constructor(
+  //   @InjectRepository(User) private readonly userRepository: Repository<User>,
+  //   private readonly utilsService: UtilsService,
+  //   private readonly redisService: RedisService,
+  // ) {}
 
-  @Inject(UtilsService)
-  private utilsService: UtilsService;
+  constructor(
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @Inject(UtilsService) private readonly utilsService: UtilsService,
+    @Inject(RedisService) private readonly redisService: RedisService,
+  ) {}
 
   async register(user: RegisterUserDto) {
     const captcha = await this.redisService.get(`captcha_${user.email}`);

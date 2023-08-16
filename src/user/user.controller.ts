@@ -17,14 +17,11 @@ import { RedisService } from 'src/common/redis/redis.service';
 
 @Controller('user')
 export class UserController {
-  @Inject(EmailService)
-  private emailService: EmailService;
-
-  @Inject(RedisService)
-  private redisService: RedisService;
-
-  @Inject(UserService)
-  private readonly userService: UserService;
+  constructor(
+    @Inject(EmailService) private readonly emailService: EmailService,
+    @Inject(RedisService) private readonly redisService: RedisService,
+    @Inject(UserService) private readonly userService: UserService,
+  ) {}
 
   @Post('register')
   register(@Body() registerUser: RegisterUserDto) {
