@@ -1,4 +1,4 @@
 import { SetMetadata } from '@nestjs/common';
 
-export const Login = (isNeedLogin: boolean) =>
+export const Auth = (isNeedLogin = true) =>
   SetMetadata('require-login', isNeedLogin);

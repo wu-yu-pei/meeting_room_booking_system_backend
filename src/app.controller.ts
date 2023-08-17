@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { Login } from './decorator/login.decorator';
+import { Auth } from './decorator/Auth.decorator';
 
 import { AppService } from './app.service';
 import { Permission } from './decorator/permission.decorator';
@@ -14,16 +14,23 @@ export class AppController {
   }
 
   @Get('aaa')
-  @Login(true)
+  @Auth()
   @Permission(['aaa'])
   getAaa(): string {
     return 'a';
   }
 
   @Get('bbb')
-  @Login(true)
+  @Auth()
   @Permission(['bbb'])
   getBbb(): string {
     return 'b';
+  }
+
+  @Get('ccc')
+  @Auth(false)
+  @Permission(['ccc'])
+  getCcc(): string {
+    return 'c';
   }
 }
