@@ -9,11 +9,11 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { RegisterUserDto } from './dto/register-user.dto';
-import { EmailService } from 'src/common/email/email.service';
-import { RedisService } from 'src/common/redis/redis.service';
+import { EmailService } from 'src/module/common/email/email.service';
+import { RedisService } from 'src/module/common/redis/redis.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
-import { UtilsService } from 'src/common/utils/utils.service';
+import { UtilsService } from 'src/module/common/utils/utils.service';
 
 @Controller('user')
 export class UserController {

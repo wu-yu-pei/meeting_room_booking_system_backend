@@ -9,7 +9,7 @@ import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { Observable } from 'rxjs';
-import { JwtUserData } from 'src/common/interface';
+import { JwtUserData } from 'src/module/common/interface';
 
 declare module 'express' {
   interface Request {
