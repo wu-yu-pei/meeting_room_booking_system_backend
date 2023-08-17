@@ -1,4 +1,6 @@
-import { Controller, Get, SetMetadata } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+import { Login } from './decorator/login.decorator';
+
 import { AppService } from './app.service';
 
 @Controller()
@@ -11,13 +13,13 @@ export class AppController {
   }
 
   @Get('aaa')
-  @SetMetadata('require-login', false)
+  @Login(true)
   getAaa(): string {
     return 'a';
   }
 
   @Get('bbb')
-  @SetMetadata('require-login', true)
+  @Login(false)
   getBbb(): string {
     return 'b';
   }
