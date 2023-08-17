@@ -25,7 +25,11 @@ import { EmailModule } from './common/email/email.module';
 })
 export class AppModule {}
 
-// setup all need optional module
+/**
+ * setup all need optional module
+ * @returns {Array} Modules
+ */
+
 function setupOptionalModules() {
   const _ConfigModule = ConfigModule.forRoot({
     isGlobal: true,
