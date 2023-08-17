@@ -11,6 +11,7 @@ import { Permission } from './module/user/entities/permission.entity';
 import { RedisModule } from './module/common/redis/redis.module';
 import { UtilsModule } from './module/common/utils/utils.module';
 import { EmailModule } from './module/common/email/email.module';
+import { ScheduleModule } from '@nestjs/schedule';
 import { APP_GUARD } from '@nestjs/core';
 import { LoginGuard } from './guard/login.guard';
 import defConfig from './config/def.config';
@@ -18,6 +19,7 @@ import devConfig from './config/dev.config';
 import prodConfig from './config/prod.config';
 import { PermissionGuard } from './guard/permission.guard';
 import { isDev } from './utils';
+import { TaskModule } from './module/task/task.module';
 
 @Module({
   imports: [
@@ -26,6 +28,7 @@ import { isDev } from './utils';
     RedisModule,
     UtilsModule,
     EmailModule,
+    TaskModule,
   ],
   controllers: [AppController],
   providers: [
@@ -87,5 +90,7 @@ function setupOptionalModules() {
     inject: [ConfigService],
   });
 
-  return [_ConfigModule, _JwtModule, _TypeOrmModule];
+  const _ScheduleModule = ScheduleModule.forRoot();
+
+  return [_ConfigModule, _JwtModule, _TypeOrmModule, _ScheduleModule];
 }
