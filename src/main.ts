@@ -3,6 +3,8 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
+import { FormatResponseInterceptor } from './interceptor/format-response.interceptor';
+import { InvokeRecordInterceptor } from './interceptor/invoke-record.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,6 +14,10 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   app.useGlobalFilters(new HttpExceptionFilter());
+
+  app.useGlobalInterceptors(new FormatResponseInterceptor());
+
+  app.useGlobalInterceptors(new InvokeRecordInterceptor());
 
   const PORT = app.get(ConfigService).get('nest_server_port');
 
