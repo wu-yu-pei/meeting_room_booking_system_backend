@@ -14,6 +14,9 @@ import { RedisService } from 'src/module/common/redis/redis.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UtilsService } from 'src/module/common/utils/utils.service';
+import { Auth } from 'src/decorator/auth.decorator';
+import { UserInfo } from 'src/decorator/userInfo.decorator';
+import { UserDetailVo } from './vo/user-info.vo';
 
 @Controller('user')
 export class UserController {
@@ -76,6 +79,24 @@ export class UserController {
     vo.refreshToken = this.utilsService.getRefreshToken({
       userId: vo.userInfo.id,
     });
+
+    return vo;
+  }
+
+  @Get('info')
+  @Auth()
+  async info(@UserInfo('userId') userId: number) {
+    const user = await this.userService.findUserDetailById(userId);
+
+    const vo = new UserDetailVo();
+    vo.id = user.id;
+    vo.email = user.email;
+    vo.username = user.username;
+    vo.headPic = user.headPic;
+    vo.phoneNumber = user.phoneNumber;
+    vo.nickName = user.nickName;
+    vo.createTime = user.createTime;
+    vo.isFrozen = user.isFrozen;
 
     return vo;
   }

@@ -171,4 +171,14 @@ export class UserService {
     await this.roleRepository.save([role1, role2]);
     await this.userRepository.save([user1, user2]);
   }
+
+  async findUserDetailById(userId: number) {
+    const user = await this.userRepository.findOne({
+      where: {
+        id: userId,
+      },
+    });
+
+    return user;
+  }
 }
