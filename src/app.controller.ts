@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { Auth } from './decorator/Auth.decorator';
+import { Auth } from './decorator/auth.decorator';
 
 import { AppService } from './app.service';
 import { Permission } from './decorator/permission.decorator';
