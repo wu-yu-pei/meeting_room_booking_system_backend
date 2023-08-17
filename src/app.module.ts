@@ -17,6 +17,7 @@ import defConfig from './config/def.config';
 import devConfig from './config/dev.config';
 import prodConfig from './config/prod.config';
 import { PermissionGuard } from './guard/permission.guard';
+import { isDev } from './utils';
 
 @Module({
   imports: [
@@ -87,8 +88,4 @@ function setupOptionalModules() {
   });
 
   return [_ConfigModule, _JwtModule, _TypeOrmModule];
-}
-
-function isDev() {
-  return process.env.NODE_ENV === 'development';
 }
