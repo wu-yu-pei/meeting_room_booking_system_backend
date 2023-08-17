@@ -1,16 +1,30 @@
-import { Controller, Get, Post, Body, Query, Inject } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Query,
+  Inject,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { EmailService } from 'src/common/email/email.service';
 import { RedisService } from 'src/common/redis/redis.service';
 import { LoginUserDto } from './dto/login-user.dto';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import { UtilsService } from 'src/common/utils/utils.service';
 
 @Controller('user')
 export class UserController {
   constructor(
+    @Inject(ConfigService) private readonly configService: ConfigService,
     @Inject(EmailService) private readonly emailService: EmailService,
     @Inject(RedisService) private readonly redisService: RedisService,
     @Inject(UserService) private readonly userService: UserService,
+    @Inject(JwtService) private readonly jwtService: JwtService,
+    @Inject(UtilsService) private readonly utilsService: UtilsService,
   ) {}
 
   @Post('register')
@@ -34,16 +48,88 @@ export class UserController {
 
   @Post('login')
   async userLogin(@Body() loginUser: LoginUserDto) {
-    return this.userService.login(loginUser, false);
+    const vo = await this.userService.login(loginUser, false);
+
+    vo.accessToken = this.utilsService.getAccessToken({
+      id: vo.userInfo.id,
+      username: vo.userInfo.username,
+      roles: vo.userInfo.roles,
+      permissions: vo.userInfo.permissions,
+    });
+
+    vo.refreshToken = this.utilsService.getRefreshToken(vo.userInfo.id);
+
+    return vo;
   }
 
   @Post('admin/login')
   async adminLogin(@Body() loginUser: LoginUserDto) {
-    return this.userService.login(loginUser, true);
+    const vo = await this.userService.login(loginUser, true);
+
+    vo.accessToken = this.utilsService.getAccessToken({
+      id: vo.userInfo.id,
+      username: vo.userInfo.username,
+      roles: vo.userInfo.roles,
+      permissions: vo.userInfo.permissions,
+    });
+
+    vo.refreshToken = this.utilsService.getRefreshToken(vo.userInfo.id);
+
+    return vo;
   }
 
   @Get('initData')
   initData() {
     return this.userService.initData();
+  }
+
+  @Get('refresh')
+  async refresh(@Query('refreshToken') refreshToken: string) {
+    try {
+      const data = this.jwtService.verify(refreshToken);
+
+      const user = await this.userService.findUserById(data.userId, false);
+
+      const access_token = this.utilsService.getAccessToken({
+        id: user.id,
+        username: user.username,
+        roles: user.roles,
+        permissions: user.permissions,
+      });
+
+      const refresh_token = this.utilsService.getRefreshToken(user.id);
+
+      return {
+        access_token,
+        refresh_token,
+      };
+    } catch (e) {
+      throw new UnauthorizedException('token 已失效，请重新登录');
+    }
+  }
+
+  @Get('admin/refresh')
+  async adminRefresh(@Query('refreshToken') refreshToken: string) {
+    try {
+      const data = this.jwtService.verify(refreshToken);
+
+      const user = await this.userService.findUserById(data.userId, true);
+
+      const access_token = this.utilsService.getAccessToken({
+        id: user.id,
+        username: user.username,
+        roles: user.roles,
+        permissions: user.permissions,
+      });
+
+      const refresh_token = this.utilsService.getRefreshToken(user.id);
+
+      return {
+        access_token,
+        refresh_token,
+      };
+    } catch (e) {
+      throw new UnauthorizedException('token 已失效，请重新登录');
+    }
   }
 }
