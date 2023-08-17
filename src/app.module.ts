@@ -16,6 +16,7 @@ import { LoginGuard } from './guard/login.guard';
 import defConfig from './config/def.config';
 import devConfig from './config/dev.config';
 import prodConfig from './config/prod.config';
+import { PermissionGuard } from './guard/permission.guard';
 
 @Module({
   imports: [
@@ -31,6 +32,10 @@ import prodConfig from './config/prod.config';
     {
       provide: APP_GUARD,
       useClass: LoginGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: PermissionGuard,
     },
   ],
 })

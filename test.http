@@ -17,16 +17,16 @@
 # content-type: application/json
 
 
-# POST http://127.0.0.1:3000/user/login HTTP/1.1
+# POST http://127.0.0.1:3000/api/user/admin/login HTTP/1.1
 # content-type: application/json
 
 # {
 #   "username": "wuyupei",
-#   "password": "222222"
+#   "password": "111111"
 # }
 
 
-POST http://127.0.0.1:3000/user/login HTTP/1.1
+POST http://127.0.0.1:3000/api/user/login HTTP/1.1
 content-type: application/json
 
 {
