@@ -2,6 +2,7 @@ import * as crypto from 'crypto';
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { AccessTokenJwtPayload, RefreshTokenJwtPayload } from '../interface';
 
 @Injectable()
 export class UtilsService {
@@ -17,18 +18,13 @@ export class UtilsService {
     return hash.digest('hex');
   }
 
-  getAccessToken(userInfo: {
-    id: number;
-    username: string;
-    roles: string[];
-    permissions: string[];
-  }) {
+  getAccessToken(payload: AccessTokenJwtPayload) {
     return this.jwtService.sign(
       {
-        userId: userInfo.id,
-        username: userInfo.username,
-        roles: userInfo.roles,
-        permissions: userInfo.permissions,
+        userId: payload.id,
+        username: payload.username,
+        roles: payload.roles,
+        permissions: payload.permissions,
       },
       {
         expiresIn:
@@ -37,10 +33,10 @@ export class UtilsService {
     );
   }
 
-  getRefreshToken(userId: number) {
+  getRefreshToken(payload: RefreshTokenJwtPayload) {
     return this.jwtService.sign(
       {
-        userId,
+        userId: payload.userId,
       },
       {
         expiresIn:

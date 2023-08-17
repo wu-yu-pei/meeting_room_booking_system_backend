@@ -55,7 +55,9 @@ export class UserController {
       permissions: vo.userInfo.permissions,
     });
 
-    vo.refreshToken = this.utilsService.getRefreshToken(vo.userInfo.id);
+    vo.refreshToken = this.utilsService.getRefreshToken({
+      userId: vo.userInfo.id,
+    });
 
     return vo;
   }
@@ -71,7 +73,9 @@ export class UserController {
       permissions: vo.userInfo.permissions,
     });
 
-    vo.refreshToken = this.utilsService.getRefreshToken(vo.userInfo.id);
+    vo.refreshToken = this.utilsService.getRefreshToken({
+      userId: vo.userInfo.id,
+    });
 
     return vo;
   }
@@ -95,7 +99,9 @@ export class UserController {
         permissions: user.permissions,
       });
 
-      const refresh_token = this.utilsService.getRefreshToken(user.id);
+      const refresh_token = this.utilsService.getRefreshToken({
+        userId: user.id,
+      });
 
       return {
         access_token,
@@ -120,7 +126,9 @@ export class UserController {
         permissions: user.permissions,
       });
 
-      const refresh_token = this.utilsService.getRefreshToken(user.id);
+      const refresh_token = this.utilsService.getRefreshToken({
+        userId: user.id,
+      });
 
       return {
         access_token,
