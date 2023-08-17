@@ -18,6 +18,10 @@ export class UtilsService {
     return hash.digest('hex');
   }
 
+  isDev() {
+    return process.env.NODE_ENV === 'development';
+  }
+
   getAccessToken(payload: AccessTokenJwtPayload) {
     return this.jwtService.sign(
       {

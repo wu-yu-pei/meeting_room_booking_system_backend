@@ -13,6 +13,9 @@ import { UtilsModule } from './common/utils/utils.module';
 import { EmailModule } from './common/email/email.module';
 import { APP_GUARD } from '@nestjs/core';
 import { LoginGuard } from './guard/login.guard';
+import defConfig from './config/def.config';
+import devConfig from './config/dev.config';
+import prodConfig from './config/prod.config';
 
 @Module({
   imports: [
@@ -41,7 +44,7 @@ export class AppModule {}
 function setupOptionalModules() {
   const _ConfigModule = ConfigModule.forRoot({
     isGlobal: true,
-    envFilePath: '.env',
+    load: [defConfig, isDev() ? devConfig : prodConfig],
   });
 
   const _JwtModule = JwtModule.registerAsync({
@@ -50,7 +53,7 @@ function setupOptionalModules() {
       return {
         secret: configService.get('jwt_secret'),
         signOptions: {
-          expiresIn: '30m',
+          expiresIn: configService.get('jwt_access_token_expires_time'),
         },
       };
     },
@@ -79,4 +82,8 @@ function setupOptionalModules() {
   });
 
   return [_ConfigModule, _JwtModule, _TypeOrmModule];
+}
+
+function isDev() {
+  return process.env.NODE_ENV === 'development';
 }
