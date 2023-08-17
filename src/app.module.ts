@@ -14,42 +14,7 @@ import { EmailModule } from './common/email/email.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: '.env',
-    }),
-    JwtModule.registerAsync({
-      global: true,
-      useFactory(configService: ConfigService) {
-        return {
-          secret: configService.get('jwt_secret'),
-          signOptions: {
-            expiresIn: '30m', // 默认 30 分钟
-          },
-        };
-      },
-      inject: [ConfigService],
-    }),
-    TypeOrmModule.forRootAsync({
-      useFactory(configService: ConfigService) {
-        return {
-          type: 'mysql',
-          host: configService.get('mysql_server_host'),
-          port: configService.get('mysql_server_port'),
-          username: configService.get('mysql_server_username'),
-          password: configService.get('mysql_server_password'),
-          database:
-            'meeting_room_booking_system_backend' ||
-            configService.get('mysql_server_database'),
-          synchronize: true,
-          logging: false,
-          entities: [User, Role, Permission],
-          poolSize: 10,
-          connectorPackage: 'mysql2',
-        };
-      },
-      inject: [ConfigService],
-    }),
+    ...setupOptionalModules(),
     UserModule,
     RedisModule,
     UtilsModule,
@@ -59,3 +24,47 @@ import { EmailModule } from './common/email/email.module';
   providers: [AppService],
 })
 export class AppModule {}
+
+// setup all need optional module
+function setupOptionalModules() {
+  const _ConfigModule = ConfigModule.forRoot({
+    isGlobal: true,
+    envFilePath: '.env',
+  });
+
+  const _JwtModule = JwtModule.registerAsync({
+    global: true,
+    useFactory(configService: ConfigService) {
+      return {
+        secret: configService.get('jwt_secret'),
+        signOptions: {
+          expiresIn: '30m',
+        },
+      };
+    },
+    inject: [ConfigService],
+  });
+
+  const _TypeOrmModule = TypeOrmModule.forRootAsync({
+    useFactory(configService: ConfigService) {
+      return {
+        type: 'mysql',
+        host: configService.get('mysql_server_host'),
+        port: configService.get('mysql_server_port'),
+        username: configService.get('mysql_server_username'),
+        password: configService.get('mysql_server_password'),
+        database:
+          'meeting_room_booking_system_backend' ||
+          configService.get('mysql_server_database'),
+        synchronize: true,
+        logging: false,
+        entities: [User, Role, Permission],
+        poolSize: 10,
+        connectorPackage: 'mysql2',
+      };
+    },
+    inject: [ConfigService],
+  });
+
+  return [_ConfigModule, _JwtModule, _TypeOrmModule];
+}

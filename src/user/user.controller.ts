@@ -13,13 +13,11 @@ import { EmailService } from 'src/common/email/email.service';
 import { RedisService } from 'src/common/redis/redis.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
 import { UtilsService } from 'src/common/utils/utils.service';
 
 @Controller('user')
 export class UserController {
   constructor(
-    @Inject(ConfigService) private readonly configService: ConfigService,
     @Inject(EmailService) private readonly emailService: EmailService,
     @Inject(RedisService) private readonly redisService: RedisService,
     @Inject(UserService) private readonly userService: UserService,
