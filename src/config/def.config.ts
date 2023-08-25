@@ -1,4 +1,10 @@
 const defConfig = {
+  swagger_path: 'doc',
+  swagger_title: '会议室预定系统接口文档',
+  swagger_description: '会议室预定系统接口文档',
+  version: '1.0',
+  prefix: '/api',
+
   redis_server_host: '127.0.0.1',
   redis_server_port: 6379,
   redis_server_db: 1,
