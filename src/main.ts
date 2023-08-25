@@ -33,17 +33,20 @@ bootstrap();
 
 function useSwagger(app: INestApplication) {
   const configService = app.get(ConfigService);
+
   const title = configService.get('swagger_title');
   const description = configService.get('swagger_description');
   const version = configService.get('version');
   const path = configService.get('swagger_path');
+  const port = configService.get('nest_server_port');
+  const prefix = configService.get('prefix');
 
   const config = new DocumentBuilder()
     .setTitle(title)
     .setDescription(description)
     .setVersion(version)
     .addTag('test')
-    .addServer('http://localhost:3000/api')
+    .addServer(`http://localhost:${port}${prefix}`)
     .build();
   const document = SwaggerModule.createDocument(app, config);
 
