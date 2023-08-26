@@ -11,11 +11,11 @@ import { Logger } from 'nestjs-pino';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // useLogger(app);
-
   useSwagger(app);
 
   usePrefix(app);
+
+  // app.useLogger(app.get(Logger));
 
   app.useGlobalPipes(new ValidationPipe());
 
@@ -33,11 +33,6 @@ async function bootstrap() {
 }
 
 bootstrap();
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function useLogger(app: INestApplication) {
-  app.useLogger(app.get(Logger));
-}
 
 function useSwagger(app: INestApplication) {
   const configService = app.get(ConfigService);
