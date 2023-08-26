@@ -6,9 +6,12 @@ import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { FormatResponseInterceptor } from './interceptor/format-response.interceptor';
 import { InvokeRecordInterceptor } from './interceptor/invoke-record.interceptor';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // useLogger(app);
 
   useSwagger(app);
 
@@ -30,6 +33,11 @@ async function bootstrap() {
 }
 
 bootstrap();
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function useLogger(app: INestApplication) {
+  app.useLogger(app.get(Logger));
+}
 
 function useSwagger(app: INestApplication) {
   const configService = app.get(ConfigService);
@@ -54,6 +62,5 @@ function useSwagger(app: INestApplication) {
 }
 
 function usePrefix(app: INestApplication) {
-  const prefix = app.get(ConfigService).get('prefix');
-  app.setGlobalPrefix(prefix);
+  app.setGlobalPrefix(app.get(ConfigService).get('prefix'));
 }
