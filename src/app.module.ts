@@ -10,7 +10,6 @@ import { Role } from './module/user/entities/role.entity';
 import { Permission } from './module/user/entities/permission.entity';
 import { RedisModule } from './module/common/redis/redis.module';
 import { UtilsModule } from './module/common/utils/utils.module';
-import { EmailModule } from './module/common/email/email.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { APP_GUARD } from '@nestjs/core';
 import { LoginGuard } from './guard/login.guard';
@@ -27,7 +26,6 @@ import { TaskModule } from './module/task/task.module';
     UserModule,
     RedisModule,
     UtilsModule,
-    EmailModule,
     TaskModule,
   ],
   controllers: [AppController],

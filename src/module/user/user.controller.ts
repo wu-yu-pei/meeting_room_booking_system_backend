@@ -9,7 +9,6 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { RegisterUserDto } from './dto/register-user.dto';
-import { EmailService } from 'src/module/common/email/email.service';
 import { RedisService } from 'src/module/common/redis/redis.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
@@ -17,15 +16,16 @@ import { UtilsService } from 'src/module/common/utils/utils.service';
 import { Auth } from 'src/decorator/auth.decorator';
 import { UserInfo } from 'src/decorator/userInfo.decorator';
 import { UserDetailVo } from './vo/user-info.vo';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Controller('user')
 export class UserController {
   constructor(
-    @Inject(EmailService) private readonly emailService: EmailService,
     @Inject(RedisService) private readonly redisService: RedisService,
     @Inject(UserService) private readonly userService: UserService,
     @Inject(JwtService) private readonly jwtService: JwtService,
     @Inject(UtilsService) private readonly utilsService: UtilsService,
+    @Inject('EMAIL_SERVICE') private readonly emailClient: ClientProxy,
   ) {}
 
   @Post('register')
@@ -39,11 +39,12 @@ export class UserController {
 
     await this.redisService.set(`captcha_${address}`, code, 5 * 60);
 
-    await this.emailService.sendMail({
+    await this.emailClient.emit('send-email-captcha', {
       to: address,
       subject: '注册验证码',
       html: `<p>你的注册验证码是 ${code}</p>`,
     });
+
     return '发送成功';
   }
 
