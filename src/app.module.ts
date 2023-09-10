@@ -20,7 +20,6 @@ import prodConfig from './config/prod.config';
 import { PermissionGuard } from './guard/permission.guard';
 import { isDev } from './utils';
 import { TaskModule } from './module/task/task.module';
-import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
@@ -93,13 +92,5 @@ function setupOptionalModules() {
 
   const _ScheduleModule = ScheduleModule.forRoot();
 
-  const _LoggerModule = LoggerModule.forRoot();
-
-  return [
-    _ConfigModule,
-    _JwtModule,
-    _TypeOrmModule,
-    _ScheduleModule,
-    _LoggerModule,
-  ];
+  return [_ConfigModule, _JwtModule, _TypeOrmModule, _ScheduleModule];
 }

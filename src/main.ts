@@ -6,7 +6,6 @@ import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { FormatResponseInterceptor } from './interceptor/format-response.interceptor';
 import { InvokeRecordInterceptor } from './interceptor/invoke-record.interceptor';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
