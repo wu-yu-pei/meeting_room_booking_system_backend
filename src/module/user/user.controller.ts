@@ -17,6 +17,7 @@ import { Auth } from 'src/decorator/auth.decorator';
 import { UserInfo } from 'src/decorator/userInfo.decorator';
 import { UserDetailVo } from './vo/user-info.vo';
 import { ClientProxy } from '@nestjs/microservices';
+import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
 
 @Controller('user')
 export class UserController {
@@ -159,5 +160,14 @@ export class UserController {
     } catch (e) {
       throw new UnauthorizedException('token 已失效，请重新登录');
     }
+  }
+
+  @Post(['update_password', 'admin/update_password'])
+  @Auth()
+  async updatePassword(
+    @UserInfo('userId') userId: number,
+    @Body() passwordDto: UpdateUserPasswordDto,
+  ) {
+    return await this.userService.updatePassword(userId, passwordDto);
   }
 }

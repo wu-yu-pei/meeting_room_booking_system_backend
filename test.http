@@ -26,10 +26,21 @@
 # }
 
 
-POST http://127.0.0.1:3000/api/user/login HTTP/1.1
+# POST http://127.0.0.1:3000/api/user/login HTTP/1.1
+# content-type: application/json
+
+# {
+#   "username": "zhangsan",
+#   "password": "222222"
+# }
+
+
+POST http://127.0.0.1:3000/api/user/admin/update_password HTTP/1.1
 content-type: application/json
+authorization: Bearn eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoid3V5dXBlaSIsInJvbGVzIjpbIueuoeeQhuWRmCJdLCJwZXJtaXNzaW9ucyI6W3siaWQiOjEsImNvZGUiOiJhYWEiLCJkZXNjcmlwdGlvbiI6Iuiuv-mXriBhYWHmjqXlj6MifSx7ImlkIjoyLCJjb2RlIjoiYmJiIiwiZGVzY3JpcHRpb24iOiLorr_pl64gYmJiIOaOpeWPoyJ9XSwiaWF0IjoxNjk4MjAwODcxLCJleHAiOjE2OTgyMDI2NzF9.h5_pAGn6n3EmNJ0ZQ0Ry7zl-BPywYIIyDMlEUU8saLk
 
 {
-  "username": "zhangsan",
-  "password": "222222"
+  "email": "495174699@qq.com",
+  "password": "22222",
+  "captcha": "123456"
 }
