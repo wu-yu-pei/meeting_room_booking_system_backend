@@ -6,6 +6,7 @@ import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { FormatResponseInterceptor } from './interceptor/format-response.interceptor';
 import { InvokeRecordInterceptor } from './interceptor/invoke-record.interceptor';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { WINSTON_LOGGER_TOKEN } from './module/common/logger/logger.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,6 +16,7 @@ async function bootstrap() {
   usePrefix(app);
 
   // app.useLogger(app.get(Logger));
+  app.useLogger(app.get(WINSTON_LOGGER_TOKEN));
 
   app.useGlobalPipes(new ValidationPipe());
 
